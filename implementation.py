@@ -109,8 +109,8 @@ def flattened_convolution():
                 for c in range(C):  # Iterates over number of channels
                     for r in range(R):  # Iterates over height of filters
                         for s in range(S):  # Iterates over width of filters
-                            h_in = e * stride_length + r   # Calculates row index in input_fmap
-                            w_in = f * stride_length + s   # Calculates column index in input_fmap
+                            h_in = e * stride_length + s   # Calculates row index in input_fmap
+                            w_in = f * stride_length + r   # Calculates column index in input_fmap
                             if 0 <= h_in < H and 0 <= w_in < W:   # For ensuring that index lies in range of input_fmaps dimensions
                                 flattened_input[c * R * S + r * S + s][n * E * F + e * F + f] = input_fmaps[n][c][h_in][w_in]  # Data Assignment
 
@@ -215,4 +215,5 @@ result = verify_outputs(naive_convolution_output,flattened_convolution_output) #
 if result:
     print("Both methods produced same output matrices")
 else:
+
     print("Produced different output matrices")
