@@ -83,7 +83,7 @@ def naive_convolution():
                                 w_in = f * stride_length + s  # width index in input fmaps
                                 if 0 <= h_in < H and 0 <= w_in < W:   # For ensuring that index lies in range of input_fmaps dimensions
                                     output_fmaps[n][m][e][f] += (
-                                        input_fmaps[n][c][w_in][h_in] * filters[m][c][r][s]      # Data Assignment
+                                        input_fmaps[n][c][h_in][w_in] * filters[m][c][r][s]      # Data Assignment
                                     )
 
     return output_fmaps
@@ -217,4 +217,5 @@ if result:
 else:
 
     print("Produced different output matrices")
+
 
