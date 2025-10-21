@@ -79,11 +79,11 @@ def naive_convolution():
                     for r in range(R):  # Iterates over height of filters 
                         for s in range(S):  # Iterates over width of filters 
                             for c in range(C):  # Iterates over number of channels
-                                h_in = e * stride_length + r  # height index in input fmaps
-                                w_in = f * stride_length + s  # width index in input fmaps
+                                h_in = e * stride_length + s  # height index in input fmaps
+                                w_in = f * stride_length + r  # width index in input fmaps
                                 if 0 <= h_in < H and 0 <= w_in < W:   # For ensuring that index lies in range of input_fmaps dimensions
                                     output_fmaps[n][m][e][f] += (
-                                        input_fmaps[n][c][h_in][w_in] * filters[m][c][r][s]      # Data Assignment
+                                        input_fmaps[n][c][w_in][h_in] * filters[m][c][r][s]      # Data Assignment
                                     )
 
     return output_fmaps
@@ -217,5 +217,6 @@ if result:
 else:
 
     print("Produced different output matrices")
+
 
 
