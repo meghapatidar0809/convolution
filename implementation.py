@@ -155,36 +155,54 @@ def flattened_convolution():
 # Implementation for checking that both PART_A and PART_B produce same results 
 def verify_outputs(naive_convolution_output, flattened_convolution_output, tolerance_value=1e-6):   # tolerance value (acceptable deviation) will be 0.000001
     
-    # Flattening of Naive output (4D to 1D)
-    flattened_Naive = []
-    for n in range(N):  # Iterates over batch_size
-        for m in range(M):  # Iterates over output filters
-            for e in range(E):  # Iterates over output_fmaps height
-                for f in range(F):  # Iterates over output_fmaps width
-                    flattened_Naive.append(round(naive_convolution_output[n][m][e][f], 5))  
+#     # Flattening of Naive output (4D to 1D)
+#     flattened_Naive = []
+#     for n in range(N):  # Iterates over batch_size
+#         for m in range(M):  # Iterates over output filters
+#             for e in range(E):  # Iterates over output_fmaps height
+#                 for f in range(F):  # Iterates over output_fmaps width
+#                     flattened_Naive.append(round(naive_convolution_output[n][m][e][f], 5))  
                       
-    # Flattening of Flattened output (2D to 1D)
-    flattened_of_Flattened = []
-    for row in flattened_convolution_output:    # Iterate over each row of flattened_convolution_output 
-        for value in row:   # Iterate over each value
-            flattened_of_Flattened.append(round(value, 5))
+#     # Flattening of Flattened output (2D to 1D)
+#     flattened_of_Flattened = []
+#     for row in flattened_convolution_output:    # Iterate over each row of flattened_convolution_output 
+#         for value in row:   # Iterate over each value
+#             flattened_of_Flattened.append(round(value, 5))
     
     
-# Flattening might change the order of elements therefore rearrangement of elements is required.
+# # Flattening might change the order of elements therefore rearrangement of elements is required.
 
 
-    # Creating a dictionary to map values of flattened_Naive with their index values
-    index_dict_for_Naive = {value: index for index, value in enumerate(flattened_Naive)}
+#     # Creating a dictionary to map values of flattened_Naive with their index values
+#     index_dict_for_Naive = {value: index for index, value in enumerate(flattened_Naive)}
     
-    # Rearranging flattened_Naive to match the order of values in flattened_of_Flattened
-    rearranged_Naive = [flattened_Naive[index_dict_for_Naive[value]] for value in flattened_of_Flattened]
+#     # Rearranging flattened_Naive to match the order of values in flattened_of_Flattened
+#     rearranged_Naive = [flattened_Naive[index_dict_for_Naive[value]] for value in flattened_of_Flattened]
 
-    # Comparison of the rearranged flattened_Naive output with flattened_of_Flattened output
-    for i in range(len(flattened_of_Flattened)):
-        # Checking if, absolute difference of values of matrices (Naive and Flattened) > tolerance, if yes then we will say the outputs are different
-        if abs(rearranged_Naive[i] - flattened_of_Flattened[i]) > tolerance_value: 
-            print(f"Rearranged Naive convolution output: {rearranged_Naive[i]}, Flattened convolution output: {flattened_of_Flattened[i]}")
-            print(f"It is evitable that output of these two convolution matrices are not same. These are not same at index {i}")
+#     # Comparison of the rearranged flattened_Naive output with flattened_of_Flattened output
+#     for i in range(len(flattened_of_Flattened)):
+#         # Checking if, absolute difference of values of matrices (Naive and Flattened) > tolerance, if yes then we will say the outputs are different
+#         if abs(rearranged_Naive[i] - flattened_of_Flattened[i]) > tolerance_value: 
+#             print(f"Rearranged Naive convolution output: {rearranged_Naive[i]}, Flattened convolution output: {flattened_of_Flattened[i]}")
+#             print(f"It is evitable that output of these two convolution matrices are not same. These are not same at index {i}")
+#             return False
+
+#     return True
+
+    naive_flat = []
+    flat_flat = []
+    
+    # Convert 4D (N, M, E, F) to 2D (M, N*E*F)
+    for m in range(M):
+        for n in range(N):
+            for e in range(E):
+                for f in range(F):
+                    naive_flat.append(naive_convolution_output[n][m][e][f])
+                    flat_flat.append(flattened_convolution_output[m][n * E * F + e * F + f])
+    
+    for i in range(len(naive_flat)):
+        if abs(naive_flat[i] - flat_flat[i]) > tolerance_value:
+            print(f"Mismatch at index {i}: naive={naive_flat[i]}, flattened={flat_flat[i]}")
             return False
 
     return True
@@ -217,6 +235,7 @@ if result:
 else:
 
     print("Produced different output matrices")
+
 
 
 
